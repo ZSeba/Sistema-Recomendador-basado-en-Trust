@@ -22,6 +22,7 @@ module Recomendador
     config.generators do |g|
       g.orm             :neo4j
     end
+    config.serve_static_assets = true
     config.assets.paths << "#{Rails}/vendor/assets/fonts"
     # Configure where the embedded neo4j database should exist
     # Notice embedded db is only available for JRuby
