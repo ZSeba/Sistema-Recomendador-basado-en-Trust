@@ -2,7 +2,7 @@
 
 <div class="container">
 
-
+<% if @predicted_scores != nil %>
   <div class="row">
 
     <div class="col-md-3">
@@ -74,5 +74,7 @@
     </div>
 
   </div>
-
+<% else %>
+Aun no hay nada :c
+<%end%>
 </div>

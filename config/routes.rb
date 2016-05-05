@@ -11,33 +11,23 @@ Rails.application.routes.draw do
   post "/log-in" => "sessions#create"
   get "/log-out" => "sessions#destroy", as: :log_out
 
-  get 'reviews/new'
+  get '/reviews/new'
 
   get '/upvote' => 'users#upvote', :as => 'up_vote'
 
   get '/downvote' => 'users#downvote', :as => 'down_vote'
 
-  get 'items/add_tag'
+  get '/items/add_tag'
 
   #post '/ajax/tag' => 'items/add_tag'
 
-  get 'users/recommend'
+  get '/users/recommend'
 
-  get 'items/tag_item'
+  get '/items/tag_item'
 
-  get 'reviews/create'
+  get '/reviews/create'
 
-  get 'reviews/show'
-
-  get 'item/new'
-
-  get 'item/create'
-
-  get 'item/show'
-
-  get 'item/new'
-
-  get 'item/create'
+  get '/reviews/show'
 
   resources :reviews
   resources :items

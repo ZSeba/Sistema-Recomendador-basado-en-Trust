@@ -1,4 +1,4 @@
-class User 
+class User
   include Neo4j::ActiveNode
   property :name, type: String
   property :password_hash, type: String
@@ -34,5 +34,4 @@ class User
      false
    end
   end
-  
 end

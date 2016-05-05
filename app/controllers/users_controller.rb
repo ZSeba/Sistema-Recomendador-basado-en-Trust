@@ -25,10 +25,11 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-    @user = User.new(user_params)
+    #binding.pry
+    @user = User.create(params[:user])
     if @user.save
       flash[:notice] = "Welcome to the site!"
-      redirect_to "users/recommend"
+      redirect_to users_recommend_path
     else
       flash[:alert] = "There was a problem creating your account. Please try again."
       redirect_to :back
@@ -71,48 +72,29 @@ class UsersController < ApplicationController
 
     @items = Item.all
 
-
-
     @all_items = Array.new
 
     @items.each do |itm|
       @all_items.append(itm.name)
     end
+    if @all_items.any?
+      @predicted_scores = Array.new
+      @all_reviews = Array.new
+      @all_reviews = @user.reviews.each_rel{|r| }
+      @items_reviewed = Array.new
 
-    @predicted_scores = Array.new
-    @all_reviews = Array.new
+      @all_reviews.each do |rev|
+        @items_reviewed.append(rev.to_node.name)
+      end
 
-    @all_reviews = @user.reviews.each_rel{|r| }
-
-    @items_reviewed = Array.new
-
-    @all_reviews.each do |rev|
-      @items_reviewed.append(rev.to_node.name)
-    end
-
-    @not_reviewed = @all_items - @items_reviewed
-
-
-
-
-
-    @not_reviewed.each do |notr|
-
+      @not_reviewed = @all_items - @items_reviewed
+      @not_reviewed.each do |notr|
         @auux = Array.new
-
         @auux.append(notr)
         @auux.append(predict_user_score(notr))
-
         @predicted_scores.append(@auux)
-
+      end
     end
-
-
-
-
-    @predicted = predict_user_score("Item 4")
-
-
   end
 
   def predict_user_score(item)
