@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  stars: 
+  content: 
+  from_user: 
+  to_item: 
+
+two:
+  stars: 
+  content: 
+  from_user: 
+  to_item: 

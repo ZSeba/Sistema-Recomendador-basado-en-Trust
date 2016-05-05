@@ -1,0 +1,7 @@
+<h1>Please Log-In</h1>
+
+<%= link_to 'Login', '/log-in' %>
+
+<% if current_user != nil %>
+Logged in as <%= current_user.name if current_user != nil %>
+<%end%>

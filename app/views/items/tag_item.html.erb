@@ -1,0 +1,32 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Avaliable Tags</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @tags.each do |tage| %>
+      <tr>
+        <td><%= tage.name %></td>
+
+        <td><%= link_to 'Tag', items_add_tag_path(:tag => tage.name,:item => @item.name) %></td>
+
+
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+
+<%= @item.inspect %>
+
+<%= link_to 'Add Tag', new_tag_path %>
+

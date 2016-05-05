@@ -1,0 +1,13 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @tag.name %>
+  <strong>Asociated items:</strong>
+  <% @tag.items.each do |iteme| %>
+      <%= link_to iteme.name, iteme %>
+  <%end%>
+</p>
+
+<%= link_to 'Edit', edit_tag_path(@tag) %>
+<%= link_to 'Back', users_recommend_path %>

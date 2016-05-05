@@ -1,0 +1,30 @@
+$('#review-form').html("<%= j (render 'form') %>");
+
+$('#review-form').slideDown(350);
+
+$('#input-id').rating();
+
+$('#review-form').submit(function(event) {
+
+    /* stop form from submitting normally */
+  event.preventDefault();
+
+  /* get values from elements on the page: */
+  var from_user = $('#review_from_user').val();
+  var to_item = $('#review_to_item').val();
+  var content = $('#review_content').val();
+  var stars = $('#input-id').val();
+
+  /* Send the data using post and put the results in a div */
+  $.ajax({
+    url: "/reviews",
+    type: "post",
+    dataType: "html",
+    data: { review: { from_user: from_user, to_item: to_item,content: content,stars:stars } },
+    success: function() {
+      location.reload();
+    },
+  });
+  return false;
+});
+
