@@ -55,4 +55,5 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-tether', '>= 1.1.0'
 end
 
-gem 'pry'
+#gem 'pry'
+#gem 'paperclip', '~> 4.1'

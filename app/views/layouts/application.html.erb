@@ -42,18 +42,12 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li>
-          <a href="#">About</a>
-        </li>
-        <li>
-          <a href="#">Services</a>
-        </li>
-        <li>
-          <a href="#">Contact</a>
+          <a href="#">All Items</a>
         </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
           <% if current_user != nil %>
-             <a> Signed in as <%= current_user.name %>. Not you? <%= link_to "Sign Out", log_out_path %></a>
+              Signed in as <%= current_user.name %>. Not you? <%= link_to "Sign Out", log_out_path %>
           <% else %>
             <a>  <%= link_to "Sign in", log_in_path  %> or <%= link_to "Sign up", new_user_path  %></a>
           <% end %>

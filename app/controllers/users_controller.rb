@@ -91,14 +91,20 @@ class UsersController < ApplicationController
       @not_reviewed.each do |notr|
         @auux = Array.new
         @auux.append(notr)
-        @auux.append(predict_user_score(notr))
-        @predicted_scores.append(@auux)
+        score = predict_user_score(notr)
+        if score > 0
+          @auux.append(score)
+          @predicted_scores.append(@auux)
+        end
+
+
+
       end
     end
   end
 
   def predict_user_score(item)
-    @neighbourhood_limit = 3
+    #@neighbourhood_limit = 3
 
     #DEFINIR A QUIEN SE PREDICE PUNTAJE
     if current_user != nil
@@ -123,98 +129,73 @@ class UsersController < ApplicationController
 
     #AHORA VER TODAS LAS REVIEWS DEL USUARIO CONSUMIDOR
     @consumer_reviews = @consumer.reviews.each_rel{|r| }
-
     @consumer_reviews.each do |review|
-
       @aux2 = Array.new
       @aux2.push(review.stars,review.to_node.name)
       @consumer_array.push(@aux2)
-
     end
-
     consum_sum = 0
     @consumer_array.each do |consum|
       consum_sum = consum_sum + consum[0].to_f
     end
-
     @consumer_average = consum_sum/@consumer_array.size.to_f
 
+    #SE HACE UN ARREGLO "producers" CON (USUARIO,ITEM,ESTRELLAS) PARA SABER LAS QUE TIENE EN COMÚN CON EL CONSUMIDOR
     @producers = Array.new
     @producers_averages = Array.new
-
-    #SE HACE UN ARREGLO "producers" CON (USUARIO,ITEM,ESTRELLAS) PARA SABER LAS QUE TIENE EN COMÚN CON EL CONSUMIDOR
     @userz.each do |user|
       @aux = Array.new
-
       if @consumer.trusts.each_rel.select{ |r| r.to_user == @user.name }.empty? || @consumer.trusts.each_rel.select{ |r| r.to_user == @user.name }.first.score >= 0.5
       @reviewz_by_user = user.reviews.each_rel{|r| }
       @reviewz_by_user.each do |user_review|
-
         @aux2 = Array.new
         @aux2.push(user_review.from_node.name,user_review.to_node.name,user_review.stars)
         @aux.push(@aux2)
-
       end
-
       @producers.push(@aux)
-
       end
-
-
     end
 
     #SE CALCULA EL PROMEDIO DE LAS REVIEWS DE CADA USUARIO
     @producers_averages = Array.new
     @producers.each do |producer|
-
       @count = 0
       producer.each do |review|
         @count = @count + review[2].to_f
       end
       @aux = Array.new
       @average = @count / producer.size.to_f
-
       @aux.push(producer[0][0],@average)
-
       @producers_averages.push(@aux)
     end
 
-    @producers_array = Array.new
-
     #SE CREAN LOS ARRAYS QUE VAN A TENER LAS REVIEWS QUE TIENE CADA PRODUCTOR CON EL CONSUMIDOR
+    @producers_array = Array.new
     @producers.each do |purodyusa|
       @aux2 = Array.new
       purodyusa.each do |purodyusa_riviu|
-
         @flag = 0
-
         @consumer_array.each do |consyuma|
           if purodyusa_riviu[1] == consyuma[1]
             @flag = 1
           end
         end
-
         if @flag == 1
           @aux = Array.new
           @aux.push(purodyusa_riviu[0],purodyusa_riviu[1],purodyusa_riviu[2])
-
           @aux2.push(@aux)
         end
       end
-
       #NO SIRVE SI SOLO TIENEN UNA REVIEW EN COMUN ...
       if @aux2.length > 1
         @producers_array.push(@aux2)
       end
       #@producers_array.push(@aux2)
-
     end
 
     @pearson_array = Array.new
     #CALCULAR EL PEARSON DE CADA DUPLA PRODUCTOR-CONSUMIDOR
-
       @debugg = Array.new
-
     @producers_array.each do |purodyu|
       @numeric_array_cons = Array.new
       @numeric_array_prod = Array.new
@@ -296,14 +277,13 @@ class UsersController < ApplicationController
     end
 
     @num = 0
-
     @pearson_array.each do |perso|
       @num = @num + perso[1].abs
     end
-
+    if @num = 0
+      @num = 1
+    end
     @delta = @denom/@num
-
-
     @pred_score = @consumer_average + @delta
 
     return @pred_score

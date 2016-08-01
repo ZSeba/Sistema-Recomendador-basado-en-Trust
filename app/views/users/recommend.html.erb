@@ -20,25 +20,26 @@
     <div class="col-md-9">
       <div class="thumbnail">
         <div class="row carousel-holder">
-
+          <% da_first_item = Item.find_by(name: @predicted_scores[0][0]) %>
           <div class="col-md-12">
-            <img src="http://placehold.it/800x300" alt="">
+            <img src=<%= da_first_item.picture_url%> alt="">
             <div class="caption">
               <h4 class="pull-right"></h4>
-              <h4><a href="#">Fifth Product</a></h4>
-              <p>This is a short description. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+              <h4><a href='#'><%= link_to da_first_item.name, da_first_item %></a></h4>
+              <p><%= da_first_item.description%></p>
             </div>
           </div>
         </div>
       </div>
 
       <div class="row">
-        <% @predicted_scores.each do |item| %>
+        <% @predicted_scores.each_with_index do |item,index| %>
+            <% if index > 0 %>
             <% da_item = Item.find_by(name: item[0]) %>
             <% if item[1] >= 3 %>
             <div class="col-sm-4 col-lg-4 col-md-4">
             <div class="thumbnail">
-              <img src="http://placehold.it/320x150" alt="">
+              <img src= <%= da_item.picture_url%> alt="">
               <div class="caption">
               <h4 class="pull-right">
                 </h4>
@@ -53,18 +54,16 @@
                   <% end %>
               <% end %>
             </div>
-            <div class="ratings">
+            <div class="ratings" >
               <p class="pull-right"><%= da_item.reviews.count %> reviews</p>
               <p>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
-                <span class="glyphicon glyphicon-star"></span>
+                <input type="hidden" class="avg-stars" data=<%= da_item.avg_rating %>/>
+
               </p>
             </div>
           </div>
         </div>
+                    <%end%>
             <% end %>
         <% end %>
 
@@ -75,6 +74,16 @@
 
   </div>
 <% else %>
-Aun no hay nada :c
+Nothing yet :c
 <%end%>
+
+<%= @predicted_scores.inspect %>
 </div>
+<script type="application/javascript">
+
+  $( ".avg-stars" ).each(function( ) {
+    var score =  parseInt($(this).attr('data'));
+    console.log(score);
+    $( this ).rating('rate', score);
+  });
+</script>

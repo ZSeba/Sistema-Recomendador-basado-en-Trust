@@ -10,12 +10,13 @@
       </ul>
     </div>
   <% end %>
-
+    Stars
+  <input type="hidden" id="input-id"/>
   <div class="field">
     <%= f.label :content %><br>
     <%= f.text_field :content %>
   </div>
-    <input type="hidden" id="input-id"/>
+
   <div class="field" style="display: none;">
     <%= f.label :to_item %>
     <%= f.text_field :to_item, value: params[:format],type:"hidden" %>
