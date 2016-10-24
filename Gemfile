@@ -24,6 +24,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+gem 'net-http-persistent', '2.9.1'
+
 # Use Unicorn as the app server
 # gem 'unicorn'
 
@@ -42,7 +44,7 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-gem 'neo4j','6.1.0'
+gem 'neo4j'
 gem 'coffee-script-source', '1.8.0'
 gem 'statsample', '~> 1.4.0'
 gem 'bcrypt'
@@ -57,6 +59,6 @@ source 'https://rails-assets.org' do
 end
 
 
-gem 'thin'
+#gem 'thin'
 #gem 'pry'
 #gem 'paperclip', '~> 4.1'
