@@ -4,8 +4,8 @@ class Trust
   property :from_user, type: String
   property :to_user, type: String
 
-  from_class User
-  to_class   User
+  from_class :User
+  to_class   :User
 
 
 
