@@ -1,0 +1,5 @@
+%h1 Please Log-In
+- #binding.pry
+= link_to 'Login', '/log-in'
+- if current_user
+  Logged in as #{current_user.name if current_user != nil}

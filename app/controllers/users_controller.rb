@@ -39,6 +39,13 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
+    if @user.blank?
+      @user = User.find(params[:id])
+    end
+    liked = params.select{|k,v| v == "liked"}
+    unless liked.blank?
+      params[:test_ranking] = liked.keys.join(',')
+    end
     respond_to do |format|
       if @user.update(user_params)
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
@@ -48,6 +55,7 @@ class UsersController < ApplicationController
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
+    binding.pry
   end
 
 
@@ -62,69 +70,54 @@ class UsersController < ApplicationController
   end
 
   def recommend
-    @tags = Tag.all
 
     if current_user != nil
-      @user = current_user
+      user = current_user
     else
-      @user = User.first
+      user = User.first
+    end
+    @predicted_scores = []
+    all_reviews = user.reviews.each_with_rel { |node, rel| }
+    items_reviewed = []
+
+    all_reviews.each do |rev|
+      items_reviewed << rev[0]
     end
 
-    @items = Item.all
-
-    @all_items = Array.new
-
-    @items.each do |itm|
-      @all_items.append(itm.name)
-    end
-    if @all_items.any?
-      @predicted_scores = Array.new
-      @all_reviews = Array.new
-      @all_reviews = @user.reviews.each_rel{|r| }
-      @items_reviewed = Array.new
-
-      @all_reviews.each do |rev|
-        @items_reviewed.append(rev.to_node.name)
-      end
-
-      @not_reviewed = @all_items - @items_reviewed
-      @not_reviewed.each do |notr|
-        @auux = Array.new
-        @auux.append(notr)
-        score = predict_user_score(notr)
-        if score > 0
-          @auux.append(score)
-          @predicted_scores.append(@auux)
-        end
-
-
-
+    not_reviewed = Item.all.result - items_reviewed
+    not_reviewed.each do |notr|
+      @auux = Array.new
+      @auux.append(notr)
+      score = predict_user_score(notr)
+      if score > 0
+        @auux.append(score)
+        @predicted_scores.append(@auux)
       end
     end
+    #binding.pry
   end
 
   def predict_user_score(item)
-    #@neighbourhood_limit = 3
-
     #DEFINIR A QUIEN SE PREDICE PUNTAJE
     if current_user != nil
-    @consumer = current_user
+      @consumer = current_user
     else
       @consumer = User.first
     end
-
     #DEFINIR A QUE ITEM SE LE VA A PREDECIR EL PTJE
-    @da_item = Item.find_by(name: item)
-
+    @da_item = item
     #TODAS LAS REVIEWS DEL OBJETO QUE SE PREDICE, PARA SABER QUÉ USUARIOS LO VIERON
     @reviewz = @da_item.reviews.each_rel{|r| }
-
     #CON LAS REVIEWS, SE SABE QUIENES SON LOS PRODUCTORES PARA ESTA SESION, AHORA SE OBTIENEN TODAS LAS QUE ESCRIBIO CADA USUARIO
+    if @reviewz.blank?
+      return 0
+    end
     @userz = Array.new
     @reviewz.each do |review|
       @userz.push(review.from_node)
     end
 
+    #binding.pry
     @consumer_array = Array.new
 
     #AHORA VER TODAS LAS REVIEWS DEL USUARIO CONSUMIDOR
@@ -145,7 +138,7 @@ class UsersController < ApplicationController
     @producers_averages = Array.new
     @userz.each do |user|
       @aux = Array.new
-      if @consumer.trusts.each_rel.select{ |r| r.to_user == @user.name }.empty? || @consumer.trusts.each_rel.select{ |r| r.to_user == @user.name }.first.score >= 0.5
+      #if @consumer.trusts.each_rel.select{ |r| r.to_user == @user.name }.empty? || @consumer.trusts.each_rel.select{ |r| r.to_user == @user.name }.first.score >= 0.5
       @reviewz_by_user = user.reviews.each_rel{|r| }
       @reviewz_by_user.each do |user_review|
         @aux2 = Array.new
@@ -153,7 +146,7 @@ class UsersController < ApplicationController
         @aux.push(@aux2)
       end
       @producers.push(@aux)
-      end
+      #end
     end
 
     #SE CALCULA EL PROMEDIO DE LAS REVIEWS DE CADA USUARIO
@@ -224,13 +217,9 @@ class UsersController < ApplicationController
           @hola = @pearson.r
 
           if @pearson.r <1 || @pearson.r > -1
-          
             @aux = Array.new
-          
             @aux.append(purodyu[0][0])
             @aux.append(@pearson.r)
-          
-
             @pearson_array.append(@aux)
           end
 
@@ -250,20 +239,17 @@ class UsersController < ApplicationController
           @aux.append(reviu[2])
           @score_target_array.append(@aux)
         end
-      end 
-    end 
+      end
+    end
 
 
     @denom_array = Array.new
-    ##for denom restas 
+    ##for denom restas
     #  denom.push( (score_target[index]-producers_averages[index]) * pearson_array[index])
     #end
 
-     
-    
     index = 0.0
     $limit = @pearson_array.length.to_f;
-    
 
     while index < $limit  do
       resta = @score_target_array[index][1].to_f - @producers_averages[index][1].to_f
@@ -273,7 +259,7 @@ class UsersController < ApplicationController
 
     @denom = 0
     @denom_array.each do |denoma|
-      @denom = @denom + denoma 
+      @denom = @denom + denoma
     end
 
     @num = 0
@@ -285,8 +271,13 @@ class UsersController < ApplicationController
     end
     @delta = @denom/@num
     @pred_score = @consumer_average + @delta
+    #binding.pry
 
-    return @pred_score
+    if @pred_score > 3.0
+      return @pred_score
+    else
+      return 0
+    end
 
   end
 
@@ -404,6 +395,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.permit(:name, :password, :password_confirmation, :created_at, :updated_at, :rec_item, :target_user,:current_item)
+      params.permit(:name, :password, :password_confirmation,:test_ranking, :created_at, :updated_at, :rec_item, :target_user,:current_item)
     end
 

@@ -1,0 +1,99 @@
+- @all_reviews = @item.reviews.each_rel{|r| }
+- cu_has_review = false
+- @all_reviews.each do |review|
+  -if review.from_node.id == current_user.id
+    - @review_from_cu = review
+    - cu_has_review = true
+.container
+  .row
+    .col-md-9
+      .thumbnail
+        %img.img-responsive{src: "#{@item.picture_url}", width:'800px', height:'300px'}
+        .caption-full
+          %h4
+            %a{:href => "#"}= @item.name
+          %p
+            = @item.description
+          %p
+            %strong Tags:
+            - @item.tags.each do |tage|
+              %tr
+                %td= tage.name
+            %tr
+              = link_to 'Add Tag',items_tag_item_path(@item.name)
+            .ratings
+              %p.pull-right
+                = @item.reviews.count
+                reviews
+              %p
+                Average Score:
+                %input{type:"hidden", class:"avg-stars", 'data-readonly': "#{@item.avg_rating}" }
+            .well
+              .pull-left
+                %h4 User Reviews
+              .text-right
+                - if  !cu_has_review
+                  = link_to new_review_path(@item.name), remote: true do
+                    %button.btn.btn-success Add a Review
+                - else
+                  Your Review:
+                  = render 'reviews/edit_form', review: @review_from_cu
+              %hr
+              .row
+                #review-form{:style => "display:none;"}
+              %hr
+              - @all_reviews.each do |review|
+                .row
+                  .col-md-12
+                    .review
+                      %input#input_review{"data-readonly" => "#{review.stars}", :type => "hidden"}
+                    = review.from_node.name
+                    %span.pull-right
+                      - if review.from_node.votes.each_rel.select{ |r| r.to_item == @item.name }.any?
+                        %td Upvoted
+                      - else
+                        %td= link_to 'Upvote,',up_vote_path(:current_item => @item.id,:target_user => review.from_node.name)
+                      - if review.from_node.votes.each_rel.select{ |r| r.to_item == @item.name }.any?
+                        %td Downvoted
+                      - else
+                        %td= link_to 'Downvote,',down_vote_path(:current_item => @item.id,:target_user => review.from_node.name)
+                    %p= review.content
+:javascript
+  $( ".avg-stars" ).each(function( ) {
+    var score =  parseInt($(this).attr('data-readonly'));
+    console.log(score);
+    $( this ).rating('rate', score);
+  });
+
+  $('.edit_review').submit(function(event) {
+
+    /* stop form from submitting normally */
+  event.preventDefault();
+
+  /* get values from elements on the page: */
+  var from_user = $('#review_from_user').val();
+  var to_item = $('#review_to_item').val();
+  var content = $('#review_content').val();
+  var stars = $('#input-id').val();
+  var id = $('#review_id').text();
+
+  var url = "/reviews/"+id
+  console.log(url)
+
+  /* Send the data using post and put the results in a div */
+  $.ajax({
+    url: url,
+    type: "put",
+    dataType: "html",
+    data: { review: { from_user: from_user, to_item: to_item,content: content,stars:stars } },
+    success: function() {
+      location.reload();
+    },
+    });
+    return false;
+  });
+
+
+
+
+

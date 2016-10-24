@@ -1,0 +1,16 @@
+%h4
+	Please check the items from this list that you actually like.
+= form_for current_user do |f|
+	#items-to-sort
+		- unless @predicted_scores.blank?
+			-@predicted_scores.each_with_index do |recommended_item,index|
+				.recommended-item
+					.index
+						=index+1
+					.name
+						=recommended_item[0].name
+					.pic
+						%img.img-responsive{src: "#{recommended_item[0].picture_url}", width:'400px', height:'150px'}
+					= check_box_tag(recommended_item[0].name,'liked')
+	= f.text_field :test_ranking, type:"hidden"
+	= submit_tag "Done"

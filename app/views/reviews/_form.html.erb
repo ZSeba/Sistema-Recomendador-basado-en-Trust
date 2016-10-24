@@ -1,3 +1,6 @@
+<% if @review == nil %>
+<% @review = review  %>
+<% end %>
 <%= form_for(@review) do |f| %>
   <% if @review.errors.any? %>
     <div id="error_explanation">

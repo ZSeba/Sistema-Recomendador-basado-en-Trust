@@ -1,0 +1,47 @@
+%h4
+	Please rate the following items, from 1 to 5 stars
+#sample-table
+	- @sample_items.each do |item|
+		.sample-item
+			.item-name
+				= item.name
+			%img.img-responsive.item-img{src: "#{item.picture_url}", width:'200px', height:'75px'}
+			.item-desc
+				= item.description
+			- review = Review.new
+			= form_for(review) do |f|
+				#from_user_field.hide
+					=f.text_field :from_user, value: current_user.name,type:"hidden"
+				#to_item_field.hide
+					=f.text_field :to_item, value: item.name,type:"hidden"
+				#content_field.hide
+					=f.text_field :content, value: 'test',type:"hidden"
+				%input.input_review{:id=>"input-id", :type => "hidden"}
+:javascript
+	$( ".input_review" ).each(function( ) {
+	$( this ).rating();
+	});
+
+	$('.input_review').on('change', function(event) {
+
+	/* stop form from submitting normally */
+	event.preventDefault();
+	/* get values from elements on the page: */
+	var from_user = $( this ).parent().find('#review_from_user').val();
+	var to_item = $( this ).parent().find('#review_to_item').val();
+	var content = $( this ).parent().find('#review_content').val();
+	var stars = $( this ).parent().find('#input-id').val();
+
+	var url = "/reviews/"
+
+	/* Send the data using post and put the results in a div */
+	$.ajax({
+	url: "/reviews",
+	type: "post",
+	dataType: "html",
+	data: { review: { from_user: from_user, to_item: to_item,content: content,stars:stars } },
+	success: function() {
+		console.log("review submitted");
+			},
+	});
+	});

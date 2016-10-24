@@ -1,3 +1,4 @@
+<% unless @user.blank? %>
 <p id="notice"><%= notice %></p>
 
 <p>
@@ -22,3 +23,33 @@
 
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>
+
+<% else %>
+
+<h1> Thanks for participating! </h1>
+<h3>Have a cute smiley</h3>
+
+	<%=  random = rand(1..10) %>
+	<% case random %>
+	<% when 1 %>
+		⊂(・﹏・⊂)
+	<% when 2 %>
+		⊂（♡⌂♡）⊃
+	<% when 3 %>
+		(っ⇀⑃↼)っ
+	<% when 4 %>
+		(っ⇀`皿′↼)っ
+	<% when 5 %>
+		(.づσ▿σ)づ.
+	<% when 6 %>
+		⊂(´・ω・｀⊂)
+	<% when 7 %>
+		ლ(´ ❥ `ლ)
+	<% when 8 %>
+		ლ(・﹏・ლ)
+	<% when 9 %>
+		ʕ　·ᴥ·ʔ
+	<% when 10 %>
+		(◕‿◕✿)
+	<% end %>
+<% end %>

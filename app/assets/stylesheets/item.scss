@@ -1,3 +1,23 @@
 // Place all the styles related to the Item controller here.
 // They will automatically be included in application.scss.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+.sample-item{
+	display: flex;
+    height: 150px;
+    margin-bottom: 30px;
+    .item-desc{
+    	width:500px;
+	    overflow-y: auto;
+        margin-right: 30px;
+    }
+    .item-name{
+    	width: 250px;
+    	font-size: large;
+	    font-weight: bold;
+    }
+    .item-img{
+    	margin-right: 30px;
+    }
+}

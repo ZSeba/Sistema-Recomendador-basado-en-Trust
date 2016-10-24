@@ -42,14 +42,15 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-gem 'neo4j', '~> 6.0.0'
+gem 'neo4j'
 gem 'coffee-script-source', '1.8.0'
 gem 'statsample', '~> 1.4.0'
 gem 'bcrypt'
 gem 'gon'
 gem 'geokit-rails'
 gem 'bootstrap', '~> 4.0.0.alpha3'
-
+gem 'pry'
+gem 'haml'
 gem 'responders', '~> 2.0'
 source 'https://rails-assets.org' do
   gem 'rails-assets-tether', '>= 1.1.0'

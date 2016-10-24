@@ -11,6 +11,7 @@
 // about supported directives.
 //
 //= require jquery-2.2.3
+//= require jquery-ui
 //= require tether
 //= require jquery_ujs
 //= require turbolinks

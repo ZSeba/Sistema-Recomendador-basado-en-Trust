@@ -25,7 +25,7 @@ class ReviewsController < ApplicationController
   # POST /reviews
   # POST /reviews.json
   def create
-
+    #binding.pry
     @user = User.find_by(name: current_user.name)
     @item = Item.find_by(name: review_params[:to_item])
 

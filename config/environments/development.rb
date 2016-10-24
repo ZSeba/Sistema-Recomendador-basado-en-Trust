@@ -35,7 +35,11 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
-  config.neo4j.session_options = { basic_auth: { username: 'neo4j', password: 'root'} }
+  #config.neo4j.session_options = { basic_auth: { username: 'recomendador', password: 'Z8CRslLMSGxlpyVoqr9F'} }
+  #config.neo4j.session_type = :server_db
+  #config.neo4j.session_path = 'http://recomendador.sb02.stations.graphenedb.com:24789/db/data/'
+
+  config.neo4j.session_options = { basic_auth: { username: 'neo4j', password: 'helloworld'} }
   config.neo4j.session_type = :server_db
-  config.neo4j.session_path = 'http://localhost:7474'
+  config.neo4j.session_path = 'http://162.243.184.61:7474'
 end
