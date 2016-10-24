@@ -1,0 +1,35 @@
+before_script:
+  - "bin/rake neo4j:install[$NEO4J_VERSION] --trace"
+  - "echo 'dbms.memory.pagecache.size=1g' >> ./db/neo4j/development/conf/neo4j.conf"
+  - "echo 'dbms.memory.heap.max_size=1000' >> ./db/neo4j/development/conf/neo4j-wrapper.conf"
+  - "echo 'dbms.memory.heap.initial_size=1000' >> ./db/neo4j/development/conf/neo4j-wrapper.conf"
+  - "bin/rake neo4j:start --trace"
+  - "sleep 10"
+script:
+  - "travis_retry bin/rake default --trace"
+language: ruby
+cache: bundler
+sudo: false
+jdk:
+  - oraclejdk8
+rvm:
+  - 2.3.0
+  - 2.2.4
+  - 2.0.0
+  - jruby-1.7.23
+  - jruby-9.0.4.0
+env:
+  global:
+    - JRUBY_OPTS="-J-Xmx1280m -Xcompile.invokedynamic=false -J-XX:+TieredCompilation -J-XX:TieredStopAtLevel=1 -J-noverify -Xcompile.mode=OFF"
+  matrix:
+    - NEO4J_VERSION=community-3.0.1
+    - NEO4J_VERSION=community-2.3.0
+    - NEO4J_VERSION=community-2.2.6
+    - NEO4J_VERSION=community-2.1.8
+matrix:
+  include:
+    - rvm: 2.3.0
+      jdk:
+      before_script:
+      script: "bundle exec rubocop"
+      env: "RUBOCOP=true"
