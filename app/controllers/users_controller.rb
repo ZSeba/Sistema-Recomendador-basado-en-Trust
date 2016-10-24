@@ -266,7 +266,7 @@ class UsersController < ApplicationController
     @pearson_array.each do |perso|
       @num = @num + perso[1].abs
     end
-    if @num = 0
+    if @num == 0
       @num = 1
     end
     @delta = @denom/@num
