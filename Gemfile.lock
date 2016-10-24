@@ -1,3 +1,12 @@
+PATH
+  remote: vendor/gems/neo4j
+  specs:
+    neo4j (7.2.3)
+      activemodel (>= 4.0, < 5.1)
+      activesupport (>= 4.0, < 5.1)
+      neo4j-core (>= 6.0.0, < 7.0.0)
+      orm_adapter (~> 0.5.0)
+
 GEM
   remote: https://rubygems.org/
   remote: https://rails-assets.org/
@@ -116,11 +125,6 @@ GEM
     multi_json (1.12.1)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
-    neo4j (7.1.3)
-      activemodel (>= 4.0, < 5.1)
-      activesupport (>= 4.0, < 5.1)
-      neo4j-core (>= 6.0.0, < 7.0.0)
-      orm_adapter (~> 0.5.0)
     neo4j-core (6.1.4)
       activesupport
       faraday (~> 0.9.0)
@@ -273,7 +277,7 @@ DEPENDENCIES
   haml
   jbuilder (~> 2.0)
   jquery-rails
-  neo4j
+  neo4j (= 7.2.3)!
   pry
   rails (= 4.2.5)
   rails-assets-tether (>= 1.1.0)!
@@ -286,6 +290,9 @@ DEPENDENCIES
   tzinfo-data
   uglifier (>= 1.3.0)
   web-console (~> 2.0)
+
+RUBY VERSION
+   ruby 2.3.0p0
 
 BUNDLED WITH
    1.12.4

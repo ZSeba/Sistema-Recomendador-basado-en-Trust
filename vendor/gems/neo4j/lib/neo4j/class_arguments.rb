@@ -11,7 +11,7 @@ module Neo4j
       def validate_argument!(class_argument, context)
         return if valid_argument?(class_argument)
 
-        fail ArgumentError, "#alo"
+        fail ArgumentError, "#{context} #{INVALID_CLASS_ARGUMENT_ERROR} (was #{class_argument.inspect})"
       end
 
       def active_node_model?(class_constant)
