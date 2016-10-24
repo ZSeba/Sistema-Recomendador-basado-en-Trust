@@ -262,6 +262,7 @@ class UsersController < ApplicationController
       @denom = @denom + denoma
     end
 
+
     @num = 0
     @pearson_array.each do |perso|
       @num = @num + perso[1].abs
