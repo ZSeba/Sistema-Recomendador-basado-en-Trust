@@ -4,7 +4,7 @@
 
 
 .sample-item{
-	display: flex;
+	display: flex !important;
     height: 150px;
     margin-bottom: 30px;
     .item-desc{
