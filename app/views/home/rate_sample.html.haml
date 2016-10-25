@@ -17,6 +17,8 @@
 				#content_field.hide
 					=f.text_field :content, value: 'test',type:"hidden"
 				%input.input_review{:id=>"input-id", :type => "hidden"}
+= link_to users_recommend_path(recommend: "true"), {class: "btn btn-info", role: "button"} do
+	= "Continue"
 :javascript
 	$( ".input_review" ).each(function( ) {
 	$( this ).rating();

@@ -73,7 +73,9 @@ Rails.application.configure do
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
-  config.neo4j.session_options = { basic_auth: { username: 'neo4j', password: 'helloworld'} }
+  #config.neo4j.session_options = { basic_auth: { username: 'neo4j', password: 'helloworld'} }
   config.neo4j.session_type = :server_db
-  config.neo4j.session_path = 'http://162.243.184.61:7474'
+  #config.neo4j.session_path = 'http://162.243.184.61:7474'
+  config.neo4j.session_options = { basic_auth: { username: 'recomendador', password: 'Z8CRslLMSGxlpyVoqr9F'} }
+  config.neo4j.session_path = 'http://hobby-pgddnooakojdgbkeajoepinl.dbs.graphenedb.com:24789/db/data/'
 end
