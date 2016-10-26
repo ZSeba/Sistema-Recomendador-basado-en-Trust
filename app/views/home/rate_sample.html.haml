@@ -1,5 +1,5 @@
 %h4
-	If you've visited any of these places please rate them, from 1 to 5 stars, then press the button below.
+	If you've visited any of these places please rate them, from 1 to 5 stars, then press the button below. Leave blank if not.
 #sample-table
 	- @sample_items.each do |item|
 		.sample-item
@@ -17,7 +17,7 @@
 				#content_field.hide
 					=f.text_field :content, value: 'test',type:"hidden"
 				%input.input_review{:id=>"input-id", :type => "hidden"}
-= link_to users_recommend_path(recommend: "true"), {class: "btn btn-info", role: "button"} do
+= link_to user_path(current_user.id), {class: "btn btn-info", role: "button"} do
 	= "Continue"
 :javascript
 	$( ".input_review" ).each(function( ) {

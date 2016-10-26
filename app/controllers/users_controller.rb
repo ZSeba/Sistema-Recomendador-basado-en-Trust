@@ -25,11 +25,11 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-    #binding.pry
+    params.permit!
     @user = User.create(params[:user])
     if @user.save
       flash[:notice] = "Welcome to the site!"
-      redirect_to users_recommend_path
+      redirect_to users_path
     else
       flash[:alert] = "There was a problem creating your account. Please try again."
       redirect_to :back
@@ -55,13 +55,14 @@ class UsersController < ApplicationController
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
-    binding.pry
+    #binding.pry
   end
 
 
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
+    @user = User.find(params[:id]) if @user.blank?
     @user.destroy
     respond_to do |format|
       format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
@@ -391,6 +392,7 @@ class UsersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
+      #binding.pry
       @user = User.find(params[:id])
     end
 

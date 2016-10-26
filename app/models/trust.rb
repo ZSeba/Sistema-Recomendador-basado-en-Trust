@@ -1,4 +1,4 @@
-class Trust 
+class Trust
   include Neo4j::ActiveRel
   property :score, type: Float
   property :from_user, type: String

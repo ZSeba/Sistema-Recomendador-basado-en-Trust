@@ -22,7 +22,8 @@ class User
 
   def self.authenticate(name, password)
     user = User.where(name: name).first
-    if user && user.password_hash == BCrypt::Engine.hash_secret(user.password, user.password_salt)
+    #binding.pry
+    if user && user.password_hash == BCrypt::Engine.hash_secret(password, user.password_salt)
       user
     else
       nil
