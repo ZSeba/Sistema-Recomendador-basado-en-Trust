@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   post "/log-in" => "sessions#create"
   get "/log-out" => "sessions#destroy", as: :log_out
   get "/test_sample" => "home#rate_sample"
+  get "/thankyou" => "home#thanks"
 
   get '/reviews/new'
 

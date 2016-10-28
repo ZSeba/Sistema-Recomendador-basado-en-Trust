@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 #ruby "2.3.0"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -55,7 +55,7 @@ gem 'bootstrap', '~> 4.0.0.alpha3'
 gem 'pry'
 gem 'haml'
 gem 'responders', '~> 2.0'
-source 'https://rails-assets.org' do
+source 'http://insecure.rails-assets.org' do
   gem 'rails-assets-tether', '>= 1.1.0'
 end
 

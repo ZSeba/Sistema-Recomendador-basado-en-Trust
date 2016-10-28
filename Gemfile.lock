@@ -1,6 +1,6 @@
 GEM
-  remote: https://rubygems.org/
-  remote: https://rails-assets.org/
+  remote: http://rubygems.org/
+  remote: http://insecure.rails-assets.org/
   specs:
     actionmailer (4.2.5)
       actionpack (= 4.2.5)
